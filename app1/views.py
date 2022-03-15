@@ -4,7 +4,7 @@ from django.views import generic
 # class home(generic.DetailView):
 #     template_name = 'app1/home.html'
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'app1/home.html')
 class login(generic.ListView):
     template_name = 'app1/login.html'
 
