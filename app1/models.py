@@ -27,7 +27,7 @@ class Product(models.Model):
                                on_delete=models.CASCADE)
     price=models.FloatField()
     image=models.ImageField(upload_to='images/')
-    is_available=models.BooleanField(default=False)
+    is_available=models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
