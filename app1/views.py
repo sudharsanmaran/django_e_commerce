@@ -3,6 +3,13 @@ from django.views import generic
 # Create your views here.
 # class home(generic.DetailView):
 #     template_name = 'app1/home.html'
+from app1.models import Category,Product
+
+
+def categories(request):
+    return{
+        'categories':Category.objects.all()
+    }
 def home(request):
 
     return render(request, 'app1/home.html')

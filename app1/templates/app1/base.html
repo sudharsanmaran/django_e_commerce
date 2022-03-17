@@ -10,47 +10,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">MY SHOP</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'app1:home' %}">Home <span class="sr-only"></span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'app1:cart' %}">Cart</a>
-          </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'app1:your_order' %}">Your Order</a>
-          </li>
-            {% if user.is_athenticated %}
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'app1:logout' %}">Logut</a>
-                {% endif %}
-          </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'app1:login' %}">Login</a>
-            </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'app1:register' %}">Register</a>
-          </li>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal">My Shop</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+          <a class="p-2 text-dark" href="{% url "app1:home" %}">Home</a>
+        <a class="p-2 text-dark" href="{% url "app1:cart" %}">Cart</a>
+        <a class="p-2 text-dark" href="{% url "app1:order" %}">Check Out</a>
+        <a class="p-2 text-dark" href="{% url "app1:your_order" %}">Your Order</a>
 
-{#          <li class="nav-item dropdown">#}
-{#            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
-{#              Dropdown link#}
-{#            </a>#}
-{#            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">#}
-{#              <a class="dropdown-item" href="#">Action</a>#}
-{#              <a class="dropdown-item" href="#">Another action</a>#}
-{#              <a class="dropdown-item" href="#">Something else here</a>#}
-{#            </div>#}
-{#          </li>#}
-        </ul>
-      </div>
-    </nav>
+      </nav>
+        {% if not user.is_athenticated %}
+      <a class="btn btn-outline-primary" href="{% url "app1:register" %}">Sign up</a>
+        {% endif %}
+
+        {% if user.is_athenticated %}
+        <a class="btn btn-outline-primary" href="{% url "app1:logout" %}">Logout</a>
+        {% endif %}
+    </div>
+
     {% block content %}
 
     {% endblock %}
