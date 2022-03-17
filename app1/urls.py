@@ -4,18 +4,13 @@ from app1 import views
 
 app_name='app1'
 urlpatterns = [
-    path('',views.home,name='home'),
-    path('<int:pk>/cart/',views.cart.as_view(),
-         name='cart'),
-    path('<int:pk>/order/',views.order.as_view(),
-         name='order'),
-    path('login/',views.login.as_view(),
-         name='login'),
-    path('logout/',views.logout.as_view(),
-         name='logout'),
-    path('register/',views.register.as_view(),
-         name='register'),
-    # path('login/',views.as_view(),
-    # name='login'),
+    path('', views.home, name='home'),
+    path('cart/', views.cart, name='cart'),
+    path('order/', views.order, name='order'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('register/', views.register, name='register'),
+    path('yourorder/', views.your_order, name='your_order'),
+
 ]
 
