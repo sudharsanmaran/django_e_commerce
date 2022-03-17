@@ -4,7 +4,7 @@ from django.views import generic
 # class home(generic.DetailView):
 #     template_name = 'app1/home.html'
 from app1.models import Category,Product
-
+#test
 
 def categories(request):
     return{
