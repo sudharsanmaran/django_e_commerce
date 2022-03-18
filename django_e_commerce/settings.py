@@ -57,6 +57,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 #to access categories in every html page
                 'app1.views.categories',
+                # 'app1.views.all_products'
             ],
         },
     },

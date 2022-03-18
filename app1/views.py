@@ -10,9 +10,19 @@ def categories(request):
     return{
         'categories':Category.objects.all()
     }
+# def all_products(request):
+#     return {
+#         "all_products":Product.objects.all()
+#     }
+def productdetails(request,name):
+
+    return {
+        "product":Product.objects.all()
+    }
 def home(request):
 
-    return render(request, 'app1/home.html')
+    name="sudha"
+    return render(request, 'app1/home.html',{"products" : Product.objects.all()})
 
 def cart(request):
 
