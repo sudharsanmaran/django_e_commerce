@@ -1,9 +1,11 @@
+from django.contrib import auth
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views import generic
-# Create your views here.
-# class home(generic.DetailView):
-#     template_name = 'app1/home.html'
-from app1.models import Category,Product
+from django.urls import reverse
+
+from app1.models import Category, Product, Customer
+
+
 #test
 
 def categories(request):
@@ -21,17 +23,44 @@ def home(request):
     name="sudha"
     return render(request, 'app1/home.html',{"products" : Product.objects.all()})
 
-def cart(request):
 
-    return render(request, 'app1/cart.html',)
+def cart(request):
+    user=request.user
+    products=Customer.objects.all().filter(user=user)
+
+    return render(request, 'app1/cart.html',{
+        'products':products,
+    })
 
 def order(request):
 
     return render(request, 'app1/order.html')
 
 def login(request):
+    if request.method=='post':
+        username=request.POST.get("username")
+        password=request.POST.get("password")
+        print(username)
+        print(password)
+        if not username or not password:
+            return {
+                "error":"some required fields is missing",
+                "username":username,
+                "password":password,
+            }
+        user=auth.authenticate(username=username,password=password)
+        if not user:
+            return {
+                "error":"invalid credentials, user not exit",
+                "username":username,
+                "password": password,
+            }
+        print(user)
+        HttpResponseRedirect(reverse('app1:cart'))
+    else:
+        return render(request, 'app1/login.html',{
 
-    return render(request, 'app1/login.html')
+        })
 def logout(request):
 
     return render(request, 'app1/logout.html')
