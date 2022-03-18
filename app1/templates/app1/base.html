@@ -27,17 +27,7 @@
         <a class="btn btn-outline-primary" href="{% url "app1:logout" %}">Logout</a>
         {% endif %}
     </div>
-    <div class="dropdown">
-     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-       Dropdown link
-     </a>
 
-     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-         {% for c in categories %}
-       <li><a class="dropdown-item" href="#">{{ c.name|title }}</a></li>
-         {% endfor %}
-     </ul>
-    </div>
     {% block content %}
 
     {% endblock %}

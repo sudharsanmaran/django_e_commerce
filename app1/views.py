@@ -10,10 +10,7 @@ def categories(request):
     return{
         'categories':Category.objects.all()
     }
-# def all_products(request):
-#     return {
-#         "all_products":Product.objects.all()
-#     }
+
 def productdetails(request,name):
 
     return {
@@ -26,7 +23,7 @@ def home(request):
 
 def cart(request):
 
-    return render(request, 'app1/cart.html')
+    return render(request, 'app1/cart.html',)
 
 def order(request):
 

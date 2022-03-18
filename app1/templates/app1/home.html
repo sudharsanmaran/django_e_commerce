@@ -4,6 +4,20 @@
     home
 {% endblock %}
 {% block content %}
+     </div>
+    <div class="dropdown">
+     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+       Categories
+     </a>
+
+
+     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+         {% for c in categories %}
+       <li><a class="dropdown-item" href="#">{{ c.name|title }}</a></li>
+         {% endfor %}
+     </ul>
+    </div>
+    <br>
 
 
     {% for p in products %}
@@ -25,6 +39,7 @@
         </div>
       </div>
     </div>
+
     {% endfor %}
 
 {% endblock %}
