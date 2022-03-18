@@ -23,9 +23,10 @@
       <a class="btn btn-outline-primary" href="{% url "app1:register" %}">Sign up</a>
         {% endif %}
 
-        {% if user.is_athenticated %}
+
+{#        {% if user.is_athenticated %}#}
         <a class="btn btn-outline-primary" href="{% url "app1:logout" %}">Logout</a>
-        {% endif %}
+{#        {% endif %}#}
     </div>
 
     {% block content %}

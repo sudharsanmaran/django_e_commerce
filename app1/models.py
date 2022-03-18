@@ -25,8 +25,7 @@ class Product(models.Model):
 
 
 class Customer(models.Model):
-    user=models.OneToOneField(User,null=True,blank=True,
-                              on_delete=models.CASCADE)
+    user=models.OneToOneField(User,on_delete=models.CASCADE)
     products=models.ManyToManyField(Product,
                                null=True,blank=True)
 

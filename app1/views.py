@@ -25,7 +25,11 @@ def home(request):
 
 
 def cart(request):
+
     user=request.user
+    if user.is_anonymous:
+        return HttpResponseRedirect(reverse("app1:login"))
+    print(user)
     products=Customer.objects.all().filter(user=user)
 
     return render(request, 'app1/cart.html',{
@@ -38,32 +42,31 @@ def order(request):
 
 def login(request):
     if request.method=='post':
-        username=request.POST.get("username")
-        password=request.POST.get("password")
-        print(username)
+        username=request.POST['username']
+        password=request.POST['password']
+        print('user',username)
         print(password)
         if not username or not password:
             return {
                 "error":"some required fields is missing",
-                "username":username,
-                "password":password,
+
             }
         user=auth.authenticate(username=username,password=password)
         if not user:
             return {
                 "error":"invalid credentials, user not exit",
-                "username":username,
-                "password": password,
+
             }
         print(user)
-        HttpResponseRedirect(reverse('app1:cart'))
+        return HttpResponseRedirect(reverse('app1:cart'))
     else:
         return render(request, 'app1/login.html',{
 
         })
 def logout(request):
+    auth.logout(request)
+    return render(request, 'app1/home.html')
 
-    return render(request, 'app1/logout.html')
 def register(request):
 
     return render(request, 'app1/register.html')

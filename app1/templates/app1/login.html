@@ -4,13 +4,13 @@
 {% block content %}
     <h3>login</h3>
      <body class="text-center">
-    <form class="form-signin">
-{#      <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">#}
+    <form class="form-signin" autocomplete="off" >
+{#
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <label for="text" class="sr-only">user Name</label>
-      <input type="text" name="username" class="form-control" placeholder="username" {% if username %}value="{{ username }}" {% endif %}required autofocus>
+      <input type="text" name="username"  class="form-control" placeholder="username" required >
       <label for="password" class="sr-only">Password</label>
-      <input type="password" name="password" class="form-control" placeholder="Password" {% if password %}value="{{ password }}" {% endif %}required>
+      <input type="password" name="password" class="form-control" placeholder="Password" required>
 
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 
