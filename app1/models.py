@@ -11,6 +11,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
+
+
 class Product(models.Model):
     name=models.CharField(max_length=200)
     category=models.ForeignKey(Category,related_name='products',
@@ -18,14 +21,13 @@ class Product(models.Model):
     price=models.FloatField()
     image=models.ImageField(upload_to='images/')
     is_available=models.BooleanField(default=True)
+    user = models.ManyToManyField(User, blank=True)
 
     def __str__(self):
         return self.name
 
 
 
-class Customer(models.Model):
-    user=models.OneToOneField(User,on_delete=models.CASCADE)
-    products=models.ManyToManyField(Product,
-                               null=True,blank=True)
+
+
 

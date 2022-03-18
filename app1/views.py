@@ -1,12 +1,11 @@
 from django.contrib import auth
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
-from app1.models import Category, Product, Customer
+from app1.models import Category, Product
 
 
-#test
 
 def categories(request):
     return{
@@ -20,8 +19,8 @@ def productdetails(request,name):
     }
 def home(request):
 
-    name="sudha"
-    return render(request, 'app1/home.html',{"products" : Product.objects.all()})
+    return render(request, 'app1/home.html',
+                  {"products" : Product.objects.all()})
 
 
 def cart(request):
@@ -29,8 +28,8 @@ def cart(request):
     user=request.user
     if user.is_anonymous:
         return HttpResponseRedirect(reverse("app1:login"))
-    print(user)
-    products=Customer.objects.all().filter(user=user)
+
+    products=Product.objects.all().filter(user=user)
 
     return render(request, 'app1/cart.html',{
         'products':products,
@@ -42,10 +41,9 @@ def order(request):
 
 def login(request):
     if request.method=='post':
-        username=request.POST['username']
-        password=request.POST['password']
-        print('user',username)
-        print(password)
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+
         if not username or not password:
             return {
                 "error":"some required fields is missing",
@@ -57,19 +55,31 @@ def login(request):
                 "error":"invalid credentials, user not exit",
 
             }
-        print(user)
+
         return HttpResponseRedirect(reverse('app1:cart'))
     else:
         return render(request, 'app1/login.html',{
 
         })
 def logout(request):
+
     auth.logout(request)
-    return render(request, 'app1/home.html')
+
+    return HttpResponseRedirect(reverse('app1:home'))
+
+def add_to_cart(request,slug):
+
+    user=request.user
+    if user.is_anonymous:
+        return HttpResponseRedirect(reverse("app1:login"))
+    product=get_object_or_404(Product, slug=slug, is_available=True)
+def remove_from_cart(request,slug):
+    user=request.user
 
 def register(request):
 
     return render(request, 'app1/register.html')
+
 def your_order(request):
 
     return render(request, 'app1/yourorder.html')
