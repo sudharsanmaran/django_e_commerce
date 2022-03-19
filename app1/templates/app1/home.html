@@ -32,8 +32,9 @@
             <img src="{{ p.image.url }}" class="img-fluid" alt="Responsive image">
               <br>
               <br>
+              <h1>{{ p.id }}</h1>
             <div>
-                <button type="button" href="{% url "app1:add_to_cart" %}" class="btn btn-lg btn-block btn-outline-primary">add to cart</button>
+                <button type="button" href="{% url "app1:add_to_cart" p.id %}" class="btn btn-lg btn-block btn-outline-primary">add to cart</button>
             </div>
           </div>
         </div>

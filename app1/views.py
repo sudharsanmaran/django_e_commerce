@@ -12,7 +12,7 @@ def categories(request):
         'categories':Category.objects.all()
     }
 
-def productdetails(request,name):
+def productdetails(request):
 
     return {
         "product":Product.objects.all()
@@ -67,14 +67,22 @@ def logout(request):
 
     return HttpResponseRedirect(reverse('app1:home'))
 
-def add_to_cart(request,slug):
+def add_to_cart(request, product_id):
 
     user=request.user
     if user.is_anonymous:
         return HttpResponseRedirect(reverse("app1:login"))
-    product=get_object_or_404(Product, slug=slug, is_available=True)
-def remove_from_cart(request,slug):
+    product=get_object_or_404(Product, pk=product_id, is_available=True)
+    print(product)
+    product.user=user
+    product.save()
+    return HttpResponseRedirect(reverse("app1:cart"))
+def remove_from_cart(request):
     user=request.user
+    if user.is_anonymous:
+        return HttpResponseRedirect(reverse("app1:login"))
+    product=get_object_or_404(Product, id=id, is_available=True)
+
 
 def register(request):
 
