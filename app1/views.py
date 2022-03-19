@@ -74,7 +74,8 @@ def add_to_cart(request, product_id):
         return HttpResponseRedirect(reverse("app1:login"))
     product=get_object_or_404(Product, pk=product_id, is_available=True)
     print(product)
-    product.user=user
+    # product.user=user doesn't work for many to many field
+    product.set(user=user)
     product.save()
     return HttpResponseRedirect(reverse("app1:cart"))
 def remove_from_cart(request):
