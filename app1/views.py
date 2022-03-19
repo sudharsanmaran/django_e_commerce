@@ -12,6 +12,12 @@ def categories(request):
         'categories':Category.objects.all()
     }
 
+def all_products_catogory(request, category_id):
+
+    products=Product.objects.all().filter(category=category_id)
+    return render(request, 'app1/home.html',
+                  {"products" : products})
+
 def productdetails(request):
 
     return {
@@ -58,9 +64,7 @@ def login(request):
 
         return HttpResponseRedirect(reverse('app1:cart'))
     else:
-        return render(request, 'app1/login.html',{
-
-        })
+        return render(request, 'app1/login.html',{})
 def logout(request):
 
     auth.logout(request)
@@ -75,14 +79,14 @@ def add_to_cart(request, product_id):
     product=get_object_or_404(Product, pk=product_id, is_available=True)
     print(product)
     # product.user=user doesn't work for many to many field
-    product.set(user=user)
+
     product.save()
     return HttpResponseRedirect(reverse("app1:cart"))
-def remove_from_cart(request):
+def remove_from_cart(request,product_id):
     user=request.user
     if user.is_anonymous:
         return HttpResponseRedirect(reverse("app1:login"))
-    product=get_object_or_404(Product, id=id, is_available=True)
+    product = get_object_or_404(Product, id=product_id, is_available=True)
 
 
 def register(request):

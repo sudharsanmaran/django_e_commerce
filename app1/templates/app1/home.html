@@ -13,7 +13,7 @@
 
      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
          {% for c in categories %}
-       <li><a class="dropdown-item" href="#">{{ c.name|title }}</a></li>
+       <li><a class="dropdown-item" href="{% url 'app1:all_products_catogory' c.id %}">{{ c.name|title }}</a></li>
          {% endfor %}
      </ul>
     </div>

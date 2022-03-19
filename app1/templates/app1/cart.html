@@ -17,7 +17,8 @@
               <br>
               <br>
             <div>
-                <button type="button" href="{% url "app1:remove_from_cart" %}" class="btn btn-lg btn-block btn-outline-primary">remove</button>
+                <a href="{% url "app1:remove_from_cart" p.id %}" class="btn btn-lg btn-block btn-outline-primary">remove</a>
+{#                <button type="button" href="{% url "app1:remove_from_cart" %}" class="btn btn-lg btn-block btn-outline-primary">remove</button>#}
             </div>
           </div>
         </div>
