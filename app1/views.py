@@ -86,11 +86,16 @@ def add_to_cart(request, product_id):
     return HttpResponseRedirect(reverse("app1:cart"))
 def remove_from_cart(request,product_id):
     user=request.user
+    # usr = User.objects.filter(username=user).get(id)
     if user.is_anonymous:
         return HttpResponseRedirect(reverse("app1:login"))
     product = get_object_or_404(Product, id=product_id, is_available=True)
     #product.user.set(None) None doesn't work
+    id=product.id
+    # Product.user.remove(user)
+    print(id)
 
+    product.user.clear()
     product.save()
     return HttpResponseRedirect(reverse("app1:cart"))
 def register(request):
