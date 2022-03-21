@@ -21,7 +21,7 @@ class Product(models.Model):
     price=models.FloatField()
     image=models.ImageField(upload_to='images/')
     is_available=models.BooleanField(default=True)
-    user = models.ManyToManyField(User, blank=True)
+    user = models.ManyToManyField(User, blank=True,null=True)
 
     def __str__(self):
         return self.name

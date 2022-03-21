@@ -1,4 +1,5 @@
 from django.contrib import auth
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -49,17 +50,17 @@ def login(request):
     if request.method=='post':
         username=request.POST.get('username')
         password=request.POST.get('password')
-
+        print("@@@@@@@@@@@@@@@2",username,password)
         if not username or not password:
             return {
                 "error":"some required fields is missing",
-
+                'username':'missing',
             }
         user=auth.authenticate(username=username,password=password)
         if not user:
             return {
                 "error":"invalid credentials, user not exit",
-
+                'username':"invalid",
             }
 
         return HttpResponseRedirect(reverse('app1:cart'))
@@ -74,12 +75,13 @@ def logout(request):
 def add_to_cart(request, product_id):
 
     user=request.user
+    usr=User.objects.filter(username=user)
     if user.is_anonymous:
         return HttpResponseRedirect(reverse("app1:login"))
     product=get_object_or_404(Product, pk=product_id, is_available=True)
     print(product)
     # product.user=user doesn't work for many to many field
-
+    product.user.set(usr)
     product.save()
     return HttpResponseRedirect(reverse("app1:cart"))
 def remove_from_cart(request,product_id):
@@ -87,8 +89,10 @@ def remove_from_cart(request,product_id):
     if user.is_anonymous:
         return HttpResponseRedirect(reverse("app1:login"))
     product = get_object_or_404(Product, id=product_id, is_available=True)
+    #product.user.set(None) None doesn't work
 
-
+    product.save()
+    return HttpResponseRedirect(reverse("app1:cart"))
 def register(request):
 
     return render(request, 'app1/register.html')

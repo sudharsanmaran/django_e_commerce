@@ -20,8 +20,10 @@
 
       </nav>
         {% if not user.is_athenticated %}
-      <a class="btn btn-outline-primary" href="{% url "app1:register" %}">Sign up</a>
+      <a class="btn btn-outline-primary" href="{% url "app1:login" %}">login</a>
         {% endif %}
+        <br>
+        <br>
 
 
 {#        {% if user.is_athenticated %}#}
