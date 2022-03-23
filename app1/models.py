@@ -23,6 +23,7 @@ class Product(models.Model):
     is_available=models.BooleanField(default=True)
     quantity=models.IntegerField(null=True,blank=True)
     user = models.ManyToManyField(User, blank=True)
+    user_quantity= models.IntegerField(null=True,blank=True,default=0)
 
     def __str__(self):
         return self.name

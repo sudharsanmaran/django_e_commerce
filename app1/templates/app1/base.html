@@ -30,7 +30,7 @@
         <a class="btn btn-outline-primary" href="{% url "app1:logout" %}">Logout</a>
 {#        {% endif %}#}
     </div>
-
+    {% include 'app1/messages.html'%}
     {% block content %}
 
     {% endblock %}

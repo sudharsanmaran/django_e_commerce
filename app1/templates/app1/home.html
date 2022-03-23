@@ -35,16 +35,19 @@
 {#              <h1>{{ p.id }}</h1>#}
             <div>
 
-                    {% if p.quantity <= 3 %}
+                    {% if p.quantity <= 3 and p.quantity > 0%}
                         <div class="alert alert-warning" role="alert">
                                only  {{ p.quantity }} left
-                    {% elif p.quantity <= 0 %}
+                        </div>
+                    {% elif p.quantity < 1%}
                         <div class="alert alert-danger" role="alert">
                                out of stack
+                        </div>
                     {% endif %}
-                </div>
-
+            </div>
+            {% if p.quantity > 0 %}
                 <a href="{% url "app1:add_to_cart" p.id %}" class="btn btn-lg btn-block btn-outline-primary">add to cart</a>
+            {% endif %}
 {#                <button type="button" href="{% url "app1:add_to_cart" p.id %}" class="btn btn-lg btn-block btn-outline-primary">add to cart</button>#}
             </div>
           </div>

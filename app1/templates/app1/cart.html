@@ -2,8 +2,19 @@
 {% extends 'app1/base.html' %}
 {% load static %}
 {% block content %}
-
+    <div align="center">
+        <h4>total price=${{ total_price }}</h4>
+    </div>
+    <br>
+    <br>
+    <div align="center">
+          {% if not products %}
+              <h3>add item to cart</h3>
+        <a href="{% url "app1:home" %}" class="btn btn-lg btn-block btn-outline-primary">explore</a>
+    {% endif %}
+    </div>
     {% for p in products %}
+
     <div class="container">
       <div class="card-deck mb-3 text-center">
         <div class="card mb-4 shadow-sm">
@@ -11,12 +22,18 @@
             <h4 class="my-0 font-weight-normal">{{ p.name|title }}</h4>
           </div>
           <div class="card-body">
-            <h1 class="card-title pricing-card-title">${{ p.price }}</h1>
+            <h3 class="card-title pricing-card-title">quantity = {{ p.user_quantity }}</h3>
+               <br>
             <img src="{{ p.image.url }}" class="img-fluid" alt="Responsive image">
               <br>
               <br>
+
+              <h3 class="card-title pricing-card-title">price for single ${{ p.price }}</h3>
+              <br>
+
             <div>
-                <a href="{% url "app1:remove_from_cart" p.id %}" class="btn btn-lg btn-block btn-outline-primary">remove</a>
+                <a href="{% url "app1:add_to_cart" p.id %}" class="btn btn-lg btn-block btn-outline-primary">add</a>
+                <a href="{% url "app1:remove_from_cart" p.id %}" class="btn btn-lg btn-block btn-outline-danger">remove</a>
 {#                <button type="button" href="{% url "app1:remove_from_cart" %}" class="btn btn-lg btn-block btn-outline-primary">remove</button>#}
             </div>
           </div>
