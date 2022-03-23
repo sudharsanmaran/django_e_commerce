@@ -1,4 +1,4 @@
-from django.contrib import auth, contenttypes, messages
+from django.contrib import auth, messages
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -14,35 +14,18 @@ def categories(request):
     }
 # to load all the products within category
 def all_products_catogory(request, category_id):
-    # user=request.user
-    # if user.is_anonymous:
+
     messages.add_message(request,messages.SUCCESS,
                          'filter applied')
     products=Product.objects.all().filter(category=category_id)
     return render(request, 'app1/home.html',
                   {"products" : products})
-    # products=Product.objects.exclude(user=user)
-    # return render(request, 'app1/home.html',
-    #               {"products": products})
-# def productdetails(request):
-#
-#     return {
-#         "product":Product.objects.all()
-#     }
-def home(request):
-    # user=request.user
-    # if user.is_anonymous:
 
-    # messages.add_message(request,messages.SUCCESS,
-    #                      'tst msg')
+def home(request):
+
     products = Product.objects.all()
     return render(request, 'app1/home.html',
                       {"products": products})
-
-    # products=Product.objects.exclude(user=user)
-    # return render(request, 'app1/home.html',
-    #               {"products": products})
-    #
 
 def cart(request):
 
@@ -66,7 +49,6 @@ def cart(request):
     })
 
 def order(request):
-
     return render(request, 'app1/order.html')
 
 def login(request):
@@ -79,20 +61,17 @@ def login(request):
         print("userrrrrrrrrrrrrr in login ",user)
         if user:
             return HttpResponseRedirect(reverse('app1:cart'))
-            # return render(request,'app1/cart.html')
+
         return render(request, 'app1/login.html')
     else:
         return render(request, 'app1/login.html',{})
+
 def logout(request):
-
     auth.logout(request)
-
     return HttpResponseRedirect(reverse('app1:home'))
 
 def add_to_cart(request, product_id):
-
     user=request.user
-
     if user.is_anonymous:
         return HttpResponseRedirect(reverse("app1:login"))
     product=get_object_or_404(Product, pk=product_id, is_available=True)
@@ -110,10 +89,10 @@ def add_to_cart(request, product_id):
                              'successfully added to cart')
         return HttpResponseRedirect(reverse("app1:home"))
     else:
-        #add msg out of stock
         messages.add_message(request, messages.WARNING,
                              'out of stack')
         return HttpResponseRedirect(reverse("app1:home"))
+
 def remove_from_cart(request,product_id):
     user=request.user
     if user.is_anonymous:
@@ -122,7 +101,6 @@ def remove_from_cart(request,product_id):
     if product:
         product.quantity+=1
         if product.user_quantity > 1:
-
             product.user_quantity -= 1
             product.save()
             return HttpResponseRedirect(reverse('app1:cart'))
