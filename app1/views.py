@@ -30,8 +30,6 @@ def home(request):
 def cart(request):
 
     user=request.user
-    print("userrrr in cart",user)
-    print(user.is_authenticated)
     if user.is_authenticated:
         products = Product.objects.all().filter(user=user)
         total_price = 0
@@ -62,9 +60,7 @@ def login(request):
         if not username or not password:
             messages.add_message(request,messages.ERROR,'missing required fields')
             return render(request, 'app1/login.html')
-        print("@@@@@@@@@@@@@@@2",username,password)
         user=auth.authenticate(username=username,password=password)
-        print("userrrrrrrrrrrrrr in login ",user)
         if user:
             auth.login(request,user)#actual login
             return HttpResponseRedirect(reverse('app1:cart'))
