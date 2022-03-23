@@ -49,8 +49,28 @@ def cart(request):
         return HttpResponseRedirect(reverse("app1:login"))
 
 
-def order(request):
-    return render(request, 'app1/order.html')
+def checkout(request):
+    user=request.user
+    if user.is_authenticated:
+        products = Product.objects.all().filter(user=user)
+        total_price = 0
+        if not products:
+            messages.add_message(request, messages.WARNING,
+                                 'no item in cart')
+        for p in products:
+            for uq in range(p.user_quantity):
+                total_price = total_price + p.price
+
+        return render(request, 'app1/checkout.html', {
+            'products': products,
+            'total_price': total_price,
+        })
+
+    else:
+        return HttpResponseRedirect(reverse("app1:login"))
+
+
+
 
 def login(request):
     #always use POST instead of post
