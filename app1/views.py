@@ -14,20 +14,28 @@ def categories(request):
     }
 
 def all_products_catogory(request, category_id):
-
+    # user=request.user
+    # if user.is_anonymous:
     products=Product.objects.all().filter(category=category_id)
     return render(request, 'app1/home.html',
                   {"products" : products})
-
+    # products=Product.objects.exclude(user=user)
+    # return render(request, 'app1/home.html',
+    #               {"products": products})
 def productdetails(request):
 
     return {
         "product":Product.objects.all()
     }
 def home(request):
-
+    user=request.user
+    if user.is_anonymous:
+        products = Product.objects.all()
+        return render(request, 'app1/home.html',
+                      {"products": products})
+    products=Product.objects.exclude(user=user)
     return render(request, 'app1/home.html',
-                  {"products" : Product.objects.all()})
+                  {"products": products})
 
 
 def cart(request):
@@ -74,22 +82,28 @@ def add_to_cart(request, product_id):
         return HttpResponseRedirect(reverse("app1:login"))
     product=get_object_or_404(Product, pk=product_id, is_available=True)
     print(product)
-    # product.user=user doesn't work for many to many field
-    # for set method need instance of model,
-    # not field of particular instance
-    usr=User.objects.filter(username=user)
-    product.user.set(usr)
-    product.save()
-    return HttpResponseRedirect(reverse("app1:home"))
+    if product.quantity >0:
+        product.quantity -=1
+        # product.user=user doesn't work for many to many field
+        # for set method need instance of model,
+        # not field of particular instance
+        usr=User.objects.filter(username=user)
+        product.user.set(usr)
+        product.save()
+        return HttpResponseRedirect(reverse("app1:home"))
+    else:
+        return HttpResponseRedirect(reverse("app1:home"))
 def remove_from_cart(request,product_id):
     user=request.user
     if user.is_anonymous:
         return HttpResponseRedirect(reverse("app1:login"))
     product = get_object_or_404(Product, id=product_id, is_available=True)
-    #product.user.set(None) None doesn't work
-    product.user.clear()
-    product.save()
-    return HttpResponseRedirect(reverse("app1:cart"))
+    if product:
+        product.quantity+=1
+        #product.user.set(None) None doesn't work
+        product.user.clear()
+        product.save()
+        return HttpResponseRedirect(reverse("app1:cart"))
 def register(request):
 
     return render(request, 'app1/register.html')
