@@ -56,15 +56,19 @@ def login(request):
     if request.method=='POST':
         username=request.POST.get('username')
         password=request.POST.get('password')
+        if not username or not password:
+            messages.add_message(request,messages.ERROR,'missing required fields')
+            return render(request, 'app1/login.html')
         print("@@@@@@@@@@@@@@@2",username,password)
         user=auth.authenticate(username=username,password=password)
         print("userrrrrrrrrrrrrr in login ",user)
         if user:
             return HttpResponseRedirect(reverse('app1:cart'))
-
+        messages.add_message(request, messages.ERROR, 'invalid credentials')
         return render(request, 'app1/login.html')
+
     else:
-        return render(request, 'app1/login.html',{})
+        return render(request, 'app1/login.html')
 
 def logout(request):
     auth.logout(request)
@@ -83,6 +87,7 @@ def add_to_cart(request, product_id):
         # for set method need instance of model,
         # not field of particular instance
         usr=User.objects.filter(username=user)
+        #product.user.add/remove({id of user}/{multi usr_id})
         product.user.set(usr)
         product.save()
         messages.add_message(request, messages.SUCCESS,
