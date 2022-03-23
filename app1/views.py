@@ -1,4 +1,4 @@
-from django.contrib import auth
+from django.contrib import auth,contenttypes
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -33,6 +33,7 @@ def home(request):
 def cart(request):
 
     user=request.user
+    print("userrrr",user)
     if user.is_anonymous:
         return HttpResponseRedirect(reverse("app1:login"))
 
@@ -47,23 +48,16 @@ def order(request):
     return render(request, 'app1/order.html')
 
 def login(request):
-    if request.method=='post':
+    if request.method=='POST':
         username=request.POST.get('username')
         password=request.POST.get('password')
         print("@@@@@@@@@@@@@@@2",username,password)
-        if not username or not password:
-            return {
-                "error":"some required fields is missing",
-                'username':'missing',
-            }
-        user=auth.authenticate(username=username,password=password)
-        if not user:
-            return {
-                "error":"invalid credentials, user not exit",
-                'username':"invalid",
-            }
 
-        return HttpResponseRedirect(reverse('app1:cart'))
+        user=auth.authenticate(username=username,password=password)
+        print("userrrrrrrrrrrrrr,",user)
+        if user:
+            return HttpResponseRedirect(reverse('app1:cart'))
+        return render(request, 'app1/login.html',{})
     else:
         return render(request, 'app1/login.html',{})
 def logout(request):
@@ -86,7 +80,7 @@ def add_to_cart(request, product_id):
     usr=User.objects.filter(username=user)
     product.user.set(usr)
     product.save()
-    return HttpResponseRedirect(reverse("app1:cart"))
+    return HttpResponseRedirect(reverse("app1:home"))
 def remove_from_cart(request,product_id):
     user=request.user
     if user.is_anonymous:

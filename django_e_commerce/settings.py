@@ -1,4 +1,5 @@
 import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,9 +26,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app1',
-    'psycopg2',
-    # 'pillow',
+
+    'app1.apps.App1Config',
+
+
 
 ]
 
