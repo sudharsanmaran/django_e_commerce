@@ -31,22 +31,25 @@ def cart(request):
 
     user=request.user
     print("userrrr in cart",user)
-    if user.is_anonymous:
+    print(user.is_authenticated)
+    if user.is_authenticated:
+        products = Product.objects.all().filter(user=user)
+        total_price = 0
+        if not products:
+            messages.add_message(request, messages.WARNING,
+                                 'no item in cart')
+        for p in products:
+            for uq in range(p.user_quantity):
+                total_price = total_price + p.price
+
+        return render(request, 'app1/cart.html', {
+            'products': products,
+            'total_price': total_price,
+        })
+
+    else:
         return HttpResponseRedirect(reverse("app1:login"))
 
-    products=Product.objects.all().filter(user=user)
-    total_price=0
-    if not products:
-        messages.add_message(request,messages.WARNING,
-                             'no item in cart')
-    for p in products:
-        for uq in range(p.user_quantity):
-            total_price = total_price + p.price
-
-    return render(request, 'app1/cart.html',{
-        'products':products,
-        'total_price': total_price,
-    })
 
 def order(request):
     return render(request, 'app1/order.html')
@@ -63,6 +66,7 @@ def login(request):
         user=auth.authenticate(username=username,password=password)
         print("userrrrrrrrrrrrrr in login ",user)
         if user:
+            auth.login(request,user)#actual login
             return HttpResponseRedirect(reverse('app1:cart'))
         messages.add_message(request, messages.ERROR, 'invalid credentials')
         return render(request, 'app1/login.html')
