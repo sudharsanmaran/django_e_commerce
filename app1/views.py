@@ -1,4 +1,4 @@
-from django.contrib import auth,contenttypes
+from django.contrib import auth, contenttypes, messages
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -7,12 +7,12 @@ from django.urls import reverse
 from app1.models import Category, Product
 
 
-
+# to load name of categories
 def categories(request):
     return{
         'categories':Category.objects.all()
     }
-
+# to load all the products within category
 def all_products_catogory(request, category_id):
     # user=request.user
     # if user.is_anonymous:
@@ -22,11 +22,11 @@ def all_products_catogory(request, category_id):
     # products=Product.objects.exclude(user=user)
     # return render(request, 'app1/home.html',
     #               {"products": products})
-def productdetails(request):
-
-    return {
-        "product":Product.objects.all()
-    }
+# def productdetails(request):
+#
+#     return {
+#         "product":Product.objects.all()
+#     }
 def home(request):
     user=request.user
     if user.is_anonymous:
@@ -56,6 +56,7 @@ def order(request):
     return render(request, 'app1/order.html')
 
 def login(request):
+    #always use POST instead of post
     if request.method=='POST':
         username=request.POST.get('username')
         password=request.POST.get('password')
@@ -65,7 +66,7 @@ def login(request):
         print("userrrrrrrrrrrrrr,",user)
         if user:
             return HttpResponseRedirect(reverse('app1:cart'))
-        return render(request, 'app1/login.html',{})
+        return render(request, 'app1/login.html')
     else:
         return render(request, 'app1/login.html',{})
 def logout(request):
@@ -82,8 +83,8 @@ def add_to_cart(request, product_id):
         return HttpResponseRedirect(reverse("app1:login"))
     product=get_object_or_404(Product, pk=product_id, is_available=True)
     print(product)
-    if product.quantity >0:
-        product.quantity -=1
+    if product.quantity > 0:
+        product.quantity -= 1
         # product.user=user doesn't work for many to many field
         # for set method need instance of model,
         # not field of particular instance
@@ -92,6 +93,8 @@ def add_to_cart(request, product_id):
         product.save()
         return HttpResponseRedirect(reverse("app1:home"))
     else:
+        #add msg out of stock
+        messages.error(request, "out of stock")
         return HttpResponseRedirect(reverse("app1:home"))
 def remove_from_cart(request,product_id):
     user=request.user
